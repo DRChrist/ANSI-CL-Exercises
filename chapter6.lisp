@@ -90,5 +90,46 @@
 
 
 ;;;6.
-(defun greatest-arg (num)
-  )
+(let ((x))
+  (defun greatest-arg (num)
+    (unless
+        (and x (> x num))
+      (setf x num))
+    x))
+
+(let ((x))
+  (defun greatest-arg2 (num)
+    (if (null x)
+        (setf x num)
+        (if (> x num)
+            (setf x num))
+        x)))
+
+;;;7.
+
+(let ((last-num))
+  (defun greater-than-last (num)
+    (if (null last-num)
+        (progn
+          (setf last-num num)
+          nil)
+        (let ((res (> num last-num)))
+          (setf last-num num)
+          res)
+        )))
+
+;;;8.
+(let ((saved ()))
+  (defun frugal (int)
+    (if (null int)
+        nil
+        (let ((res (member int saved)))
+          (if (null res)
+              (let ((newres (expensive int)))
+                (format t "adding new value to saved")
+                (push newres saved)
+                newres)
+              res)))))
+
+(defun expensive (int)
+  (+ 2 int))
