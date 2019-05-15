@@ -123,13 +123,18 @@
   (defun frugal (int)
     (if (null int)
         nil
-        (let ((res (member int saved)))
+        (let ((res (cdr (assoc int saved))))
           (if (null res)
               (let ((newres (expensive int)))
-                (format t "adding new value to saved")
-                (push newres saved)
+                (push (cons int newres) saved)
                 newres)
               res)))))
 
 (defun expensive (int)
   (+ 2 int))
+
+
+;;;9.
+(defun my-apply (fn &rest args)
+  (let ((*print-base* 8))
+    (apply fn args)))
