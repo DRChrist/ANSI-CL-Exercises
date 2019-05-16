@@ -101,9 +101,9 @@
   (defun greatest-arg2 (num)
     (if (null x)
         (setf x num)
-        (if (> x num)
-            (setf x num))
-        x)))
+        (if (< x num)
+            (setf x num)))
+    x))
 
 ;;;7.
 
@@ -135,6 +135,12 @@
 
 
 ;;;9.
-(defun my-apply (fn &rest args)
-  (let ((*print-base* 8))
-    (apply fn args)))
+(let ((*print-base* 8))
+  (defun my-apply (fn &rest args)
+    (apply fn (straighten args))))
+
+(defun straighten (lst)
+  (let ((x (car (last lst))))
+    (if (consp x)
+        (append (butlast lst) x)
+        lst)))
