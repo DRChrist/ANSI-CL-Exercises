@@ -66,15 +66,14 @@
             (or (setf from-buf (buf-next buf))
                 (read-char in nil :eof))))
         ((eql c :eof))
-      (cond ((char= c (char old pos))
+      (cond ((or (char= c (char old pos)) (char= #\+ (char old pos)))
              (incf pos)
              (cond ((= pos len)
                     (princ new out)
-                    (setf pos o)
+                    (setf pos 0)
                     (buf-clear buf))
                    ((not from-buf)
                     (buf-insert c buf))))
-            ((eql #\+ (char old pos)))
             ((zerop pos)
              (princ c out)
              (when from-buf
@@ -87,3 +86,9 @@
              (buf-reset buf)
              (setf pos 0))))
     (buf-flush buf out)))
+
+(defun file-subst-w (old new file1 file2)
+  (with-open-file (in file1 :direction :input)
+    (with-open-file (out file2 :direction :output
+                               :if-exists :supersede)
+      (stream-subst-w old new in out))))
