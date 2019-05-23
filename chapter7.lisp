@@ -23,3 +23,67 @@
                (read str nil 'eof)))
         ((eql expr 'eof) (reverse res))
       (push expr res))))
+
+;;;3.
+(defun remove-comments (in out)
+  (with-open-file (str-in in :direction :input)
+    (with-open-file (str-out out :direction :output)
+      (do ((c (read-char str-in nil 'eof)
+              (read-char str-in nil 'eof)))
+          ((eql c 'eof))
+        (if (eql c #\%)
+            (progn
+              (read-line str-in nil)
+              (terpri str-out))
+            (princ c str-out))))))
+
+;;;4.
+(defun columnize (arr)
+  (let ((ly (array-dimension arr 0))
+        (lx (array-dimension arr 1)))
+    (do ((x 0)
+         (y 0))
+        ((= y ly))
+      (format t "~10,2F" (aref arr y x))
+      (if (= x (1- lx)) 
+          (progn
+            (setf x 0)
+            (incf y)
+            (terpri))
+          (incf x)))))
+
+(eval '(columnize #2a ((2.34363 34534.4 34.234) (123.235 23.4366 23622.0) (2.3 43.4 5.32))))
+
+
+;;;5.
+(load "stringsub.lisp")
+(defun stream-subst-w (old new in out)
+  (let* ((pos 0)
+         (len (length old))
+         (buf (new-buf len))
+         (from-buf nil))
+    (do ((c (read-char in nil :eof)
+            (or (setf from-buf (buf-next buf))
+                (read-char in nil :eof))))
+        ((eql c :eof))
+      (cond ((char= c (char old pos))
+             (incf pos)
+             (cond ((= pos len)
+                    (princ new out)
+                    (setf pos o)
+                    (buf-clear buf))
+                   ((not from-buf)
+                    (buf-insert c buf))))
+            ((eql #\+ (char old pos)))
+            ((zerop pos)
+             (princ c out)
+             (when from-buf
+               (buf-pop buf)
+               (buf-reset buf)))
+            (t
+             (unless from-buf
+               (buf-insert c buf))
+             (princ (buf-pop buf) out)
+             (buf-reset buf)
+             (setf pos 0))))
+    (buf-flush buf out)))
