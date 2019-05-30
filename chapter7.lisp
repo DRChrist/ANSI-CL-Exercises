@@ -1,3 +1,8 @@
+(defpackage "CHAPTER7"
+  (:use "COMMON-LISP" "RING" "FILE"))
+
+(in-package chapter7)
+
 ;;;1.
 (defun pseudo-cat (file)
   (with-open-file (str file :direction :input)
@@ -56,7 +61,7 @@
 
 
 ;;;5.
-(load "stringsub.lisp")
+;(load "stringsub.lisp")
 (defun stream-subst-w (old new in out)
   (let* ((pos 0)
          (len (length old))
