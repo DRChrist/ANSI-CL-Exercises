@@ -1,3 +1,10 @@
+(defpackage "TEXTGENERATION"
+  (:use "COMMON-LISP")
+  (:export "GENERATE-TEXT" "GENERATE-SENTENCE" "READ-TEXT")
+  (:nicknames "HENLEY"))
+
+(in-package textgeneration)
+
 (defparameter *words* (make-hash-table :size 10000))
 
 (defconstant maxword 100)
@@ -48,3 +55,13 @@
     (dolist (pair choices)
       (if (minusp (decf i (cdr pair)))
           (return (car pair))))))
+
+;;needs to be able to handle odd numbers and maybe handle even numbers a bit better
+(defun generate-sentence (n word &optional (prev '|.|))
+  (do ((next (random-next prev) (random-next next))
+       (halfway (/ n 2))
+       (x n (decf x)))
+      ((zerop x))
+    (if (= x halfway)
+        (format t "~A " word)
+        (format t "~A " next))))
