@@ -1,5 +1,5 @@
 (defpackage "CHAPTER8"
-  (:use "COMMON-LISP"))
+  (:use "COMMON-LISP" "TEXTGENERATION"))
 
 (in-package chapter8)
 
@@ -12,7 +12,7 @@
 ;;                         function (12 bytes?) + property list (0-xxx bytes?) = quite big
 
 ;;;3.
-;;???
+;;??
 
 ;;;4.
 ;;DONE

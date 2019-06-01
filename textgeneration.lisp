@@ -56,10 +56,9 @@
       (if (minusp (decf i (cdr pair)))
           (return (car pair))))))
 
-;;needs to be able to handle odd numbers and maybe handle even numbers a bit better
 (defun generate-sentence (n word &optional (prev '|.|))
   (do ((next (random-next prev) (random-next next))
-       (halfway (/ n 2))
+       (halfway (ceiling (/ n 2)))
        (x n (decf x)))
       ((zerop x))
     (if (= x halfway)
