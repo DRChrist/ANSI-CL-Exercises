@@ -47,5 +47,28 @@
         (incf (cdr (assoc 'wobblie res))))))
 
 ;;;4.
-(defun find-intersection (qx qy wx wy tx ty fx fy)
+;;Could check for more edge-cases such as ax=bx or cx=dx
+(defun find-intersection (ax ay bx by cx cy dx dy)
+  (let* ((a1 (/ (- ay by) (- ax bx)))
+         (a2 (/ (- cy dy) (- cx dx)))
+         (b1 (- ay (* a1 ax)))
+         (b2 (- cy (* a2 cx))))
+    (if (= a1 a2)
+        nil
+        (let* ((resx (/ (- b2 b1) (- a1 a2)))
+               (resy (+ (* a1 resx) b1)))
+          (values resx resy)))))
+
+;;;5.
+(defun approx (f min max epsilon)
+;;No real idea here...
+  )
+
+;;;6.
+;;ax**3 + bx**2 + cx + d
+;;x(x(ax + b) + c) + d
+
+;;ax**4 + bx**3 + cx**2 + dx + e
+;;x(x(x(ax + b) + c) + d) + e
+(defun horner (x &rest args)
   )
