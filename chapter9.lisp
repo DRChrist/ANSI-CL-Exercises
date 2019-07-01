@@ -70,5 +70,30 @@
 
 ;;ax**4 + bx**3 + cx**2 + dx + e
 ;;x(x(x(ax + b) + c) + d) + e
-(defun horner (x &rest args)
-  )
+(defun horner (x &rest coefs)
+  (if (null x)
+      nil
+      (hornerhelper x (cdr coefs) (* x (car coefs)))))
+
+(defun hornerhelper (x coefs acc)
+  (if (null (cdr coefs))
+      (+ acc (car coefs))
+      (hornerhelper x (cdr coefs) (* x (+ acc (car coefs))))))
+
+;;without accumulator
+(defun horner2 (x &rest coefs)
+  (if (null x)
+      nil
+      (+ (car (last coefs)) (hornerhelper2 x (cdr (reverse coefs))))))
+
+(defun hornerhelper2 (x coefs)
+  (if (null (cdr coefs))
+      (* x (car coefs))
+      (* x (+ (hornerhelper2 x (cdr coefs)) (car coefs)))))
+
+;;;7.
+;;64 bits
+(eval '(typep (+ 2305843009000000000 (expt 2 61)) 'fixnum))
+
+;;;8.
+;;I think just one... Every decimal number is both single-float and short-float.
