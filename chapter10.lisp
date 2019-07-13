@@ -26,11 +26,10 @@
            ((>= ,g ,h))
          ,@body))))
 
+;;This does not work
 (defmacro ntimesrec (n &rest body)
-  (princ n)
   (let ((h (gensym)))
     `(let ((,h ,n))
-       (princ ,h)
        (if (= ,h 0)
            nil
            (progn
@@ -38,25 +37,18 @@
              (ntimesrec (1- ,h) ,@body)
              )))))
 
-(defmacro ntimestest (n)
-  (princ n)
-  (let ((g (gensym)))
-    `(let ((,g ,n))
-      (princ ,g)
-      (if (= ,g 0)
-          nil
-          (ntimestest (1- ,g))))))
-#|
-(defun ntimesrec-helper (n &rest body)
-  (if (= n 0)
-      nil
-      (progn
-        body
-        (ntimesrec-helper (1- n) body))))
-|#
+;;This works, but I am not sure it prevents multiple evaluation.
+;;It doesn't work if called inside a let-body, but I don't know if it is supposed to do that.
 (defmacro ntimesrec-helper (n &rest body)
   `(if (= ,n 0)
        nil
        (progn
          ,@body
          (ntimesrec-helper (1- ,n) ,@body))))
+
+;;;5.
+(defmacro n-of (n &rest expr)
+  (let ((g (gensym))
+        (h (gensym)))
+    `(let ((,h ,n))
+       (do))))
