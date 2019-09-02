@@ -51,3 +51,14 @@
          (setf ,j (cons ,@expr ,j))))))
 
 ;;;6.
+;;Do not really understand this exercise
+(defmacro evalrevert (lst &rest body)
+  `(let ((copylist (copy-list ,lst)))
+     ,@body
+     (setf ,lst copylist)
+     (princ ,lst)))
+
+
+;;;7.
+(defmacro pushm (obj lst)
+  `(setf ,lst (cons ,obj ,lst)))
