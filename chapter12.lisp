@@ -61,3 +61,18 @@
 (print three)
 
 ;;;2.
+
+
+;;;3.
+(defun copy-queue (q)
+  (let ((new-q (make-queue)))    
+    (setf (car new-q) (copy-list (car q))
+          (cdr new-q) (last (car new-q)))
+    new-q))
+
+;;;4.
+(defun jump-queue (obj q)
+  (if (null (car q))
+      (setf (cdr q) (setf (car q) (list obj)))
+      (push obj (car q)))
+  (car q))
