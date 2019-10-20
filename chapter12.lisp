@@ -49,6 +49,11 @@
 (defun arith-op (x)
   (member x '(+ - * /)))
 
+(eval '(progn
+        (setf q (make-queue))
+        (enqueue 'a q)
+        (enqueue 'b q)
+        (enqueue 'c q)))
 
 ;;;1.
 (setf a (list 'a))
@@ -71,8 +76,22 @@
     new-q))
 
 ;;;4.
-(defun jump-queue (obj q)
+(defun skip-queue (obj q)
   (if (null (car q))
       (setf (cdr q) (setf (car q) (list obj)))
       (push obj (car q)))
   (car q))
+
+;;;5.
+(defun jump-queue (obj q)
+  (if (null (car q))
+      nil
+      (progn
+        (delete obj (car q))
+        (push obj (car q))
+        (if (eql obj (car (cdr q)))
+            (setf (cdr q) (last (car q))))
+        (car q))))
+
+;;;6.
+;;Don't think I want to think about circular lists.
